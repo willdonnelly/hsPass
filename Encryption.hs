@@ -1,5 +1,6 @@
 module Encryption
   ( stringToKey
+  , CryptKey
   , encryptBS
   , decryptBS
   , encryptString
@@ -16,6 +17,8 @@ import qualified Codec.Encryption.Padding as PAD
 import qualified Data.Digest.SHA256 as SHA
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
+
+type CryptKey = Word256
 
 -- The `stringToKey` function generates a 256-bit key from a
 -- string of arbitrary length by taking the SHA256 digest of
