@@ -9,8 +9,7 @@ import Encryption
 import qualified Data.Set as SET
 import qualified Data.ByteString as BS
 import qualified Directory as DIR
-import Data.Maybe
-import Control.Monad
+import Numeric
 
 data PassEntry = PassEntry { name :: String
                            , user :: String
@@ -23,23 +22,17 @@ type PassDB = SET.Set PassEntry
 -- Add a new password to the database
 addPass n u p d = SET.insert $ PassEntry n u p d
 
-showDB :: PassDB -> String
-showDB db = unlines . (magicString:) . map show . SET.elems $ db
-
-readDB :: String -> Maybe PassDB
-readDB db = do
-    magic <- listToMaybe . lines $ db
-    guard (magic == magicString)
-    return . foldl (flip SET.insert) SET.empty . map read . tail . lines $ db
+readDB :: CryptKey -> String -> Maybe PassDB
+readDB k db = if (hash == keyHash) then Just . read $ pdata else Nothing
+  where (hash, pdata) = splitAt (length keyHash) db
+        keyHash = showHex (toInteger k) ""
 
 loadPassDB :: CryptKey -> String -> IO (Maybe PassDB)
 loadPassDB k f = do
     fileExists <- DIR.doesFileExist f
     if fileExists
-       then BS.readFile f >>= (return . readDB . decryptString k)
+       then BS.readFile f >>= (return . readDB k . decryptString k)
        else return . Just $ SET.empty
 
 savePassDB :: CryptKey -> String -> PassDB -> IO ()
-savePassDB k f = BS.writeFile f . encryptString k . showDB
-
-magicString = "Magic Password File Header String (This Is Important)"
+savePassDB k f = BS.writeFile f . encryptString k . showHex (toInteger k) . show

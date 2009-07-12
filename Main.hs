@@ -16,9 +16,8 @@ main = do (passDB, key) <- getDB dbFile
 getDB file = do pass <- getPassword
                 let key = stringToKey pass
                 passDB <- loadPassDB key file
-                case passDB of
-                     Nothing -> getDB file
-                     Just db -> return (db, key)
+                case passDB of Nothing -> getDB file
+                               Just db -> return (db, key)
 
 prompt :: String -> IO String
 prompt msg = do putStr msg
