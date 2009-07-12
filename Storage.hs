@@ -1,6 +1,6 @@
 module Storage
   ( PassEntry (..)
-  , PassDB (..)
+  , PassDB
   , loadPassDB
   , savePassDB ) where
 
@@ -23,6 +23,7 @@ loadPassDB k f = do present <- DIR.doesFileExist f
                     if present
                        then BS.readFile f >>= (return . loadPassDB' k)
                        else return SET.empty
+
 loadPassDB' k bs
     | magic == magicString   = read passes
     | otherwise              = SET.empty
