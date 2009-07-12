@@ -10,10 +10,10 @@ import qualified Data.Set as SET
 import qualified Data.ByteString as BS
 import qualified Directory as DIR
 
-data PassEntry = PassEntry { description :: String
-                           , username :: String
-                           , password :: String
-                           , comment :: String
+data PassEntry = PassEntry { name :: String
+                           , user :: String
+                           , pass :: String
+                           , desc :: String
                            } deriving (Read, Show, Eq, Ord)
 
 type PassDB = SET.Set PassEntry
