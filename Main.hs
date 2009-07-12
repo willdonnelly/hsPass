@@ -7,12 +7,18 @@ import System.IO
 
 import Data.Set as SET
 
-main = do
-    pass <- getPassword
-    let key = stringToKey pass
-    passDB <- loadPassDB key "passwords.db"
-    newDB <- dbAction passDB
-    savePassDB key "passwords.db" newDB
+dbFile = "passwords.db"
+
+main = do (passDB, key) <- getDB dbFile
+          newDB <- dbAction passDB
+          savePassDB key dbFile newDB
+
+getDB file = do pass <- getPassword
+                let key = stringToKey pass
+                passDB <- loadPassDB key file
+                case passDB of
+                     Nothing -> getDB file
+                     Just db -> return (db, key)
 
 prompt :: String -> IO String
 prompt msg = do putStr msg
