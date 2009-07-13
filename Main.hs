@@ -1,40 +1,24 @@
 module Main where
 
+import System    ( getArgs )
+import System.IO ( hFlush, stdout )
+
 import Encryption
 import Storage
+import Edit ( editPass )
+import Auto ( autoType )
 
-import System ( getArgs )
-import System.IO
+passPath :: String
+passPath = "passwords.db"
 
-import Data.Maybe
-
-dbFile = "passwords.db"
-
-showHelp = putStrLn "usage: hspass [display | create | auto]"
-
-showPass :: [PassEntry] -> IO ()
-showPass = putStr . unlines . map show
-
-autoType :: [PassEntry] -> IO ()
-autoType = undefined
-
-editPass :: PassEntry -> IO PassEntry
-editPass (PassEntry dName dUser dPass dDesc) = do
-    name <- prompt dName "Name"
-    user <- prompt dUser "User"
-    pass <- prompt dPass "Pass"
-    desc <- prompt dDesc "Desc"
-    return $ PassEntry name user pass desc
-  where prompt def msg = do
-            putStr $ msg ++ "[" ++ def ++ "]: "
-            hFlush stdout
-            result <- getLine
-            case result of
-                 "" -> return def
-                 nv -> return nv
+helpText :: String
+helpText = "usage: hspass [display | create | auto]"
 
 defaultPass :: PassEntry
 defaultPass = PassEntry "" "" "" ""
+
+showPass :: [PassEntry] -> IO ()
+showPass = putStr . unlines . map show
 
 main = do
     arguments <- getArgs
@@ -48,20 +32,20 @@ main' args = do
                          showPass db
          "create"  -> do (db, key) <- getDB
                          newPass <- editPass defaultPass
-                         savePassDB key dbFile (newPass:db)
+                         savePassDB key passPath (newPass:db)
          "edit"    -> do (db, key) <- getDB
                          indexString <- prompt "Index: "
                          let index = read indexString
                          let (before, (here:after)) = splitAt index db
                          newEntry <- editPass here
-                         savePassDB key dbFile (before ++ [newEntry] ++ after)
+                         savePassDB key passPath (before ++ [newEntry] ++ after)
          "auto"    -> do (db, key) <- getDB
                          autoType db
-         _         -> showHelp
+         _         -> putStrLn helpText
 
-getDB = do pass <- getPassword
+getDB = do pass <- prompt "Password: "
            let key = stringToKey pass
-           passDB <- loadPassDB key dbFile
+           passDB <- loadPassDB key passPath
            case passDB of Nothing -> getDB
                           Just db -> return (db, key)
 
@@ -69,5 +53,3 @@ prompt :: String -> IO String
 prompt msg = do putStr msg
                 hFlush stdout
                 getLine
-
-getPassword = prompt "Password: "
