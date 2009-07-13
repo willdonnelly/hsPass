@@ -3,21 +3,67 @@ module Main where
 import Encryption
 import Storage
 
+import System ( getArgs )
 import System.IO
 
-import Data.Set as SET
+import Data.Maybe
 
 dbFile = "passwords.db"
 
-main = do (passDB, key) <- getDB dbFile
-          newDB <- dbAction passDB
-          savePassDB key dbFile newDB
+showHelp = putStrLn "usage: hspass [display | create | auto]"
 
-getDB file = do pass <- getPassword
-                let key = stringToKey pass
-                passDB <- loadPassDB key file
-                case passDB of Nothing -> getDB file
-                               Just db -> return (db, key)
+showPass :: [PassEntry] -> IO ()
+showPass = putStr . unlines . map show
+
+autoType :: [PassEntry] -> IO ()
+autoType = undefined
+
+editPass :: PassEntry -> IO PassEntry
+editPass (PassEntry dName dUser dPass dDesc) = do
+    name <- prompt dName "Name"
+    user <- prompt dUser "User"
+    pass <- prompt dPass "Pass"
+    desc <- prompt dDesc "Desc"
+    return $ PassEntry name user pass desc
+  where prompt def msg = do
+            putStr $ msg ++ "[" ++ def ++ "]: "
+            hFlush stdout
+            result <- getLine
+            case result of
+                 "" -> return def
+                 nv -> return nv
+
+defaultPass :: PassEntry
+defaultPass = PassEntry "" "" "" ""
+
+main = do
+    arguments <- getArgs
+    if null arguments
+       then main' ["help"]
+       else main' arguments
+
+main' args = do
+    case head args of
+         "display" -> do (db, key) <- getDB
+                         showPass db
+         "create"  -> do (db, key) <- getDB
+                         newPass <- editPass defaultPass
+                         savePassDB key dbFile (newPass:db)
+         "edit"    -> do (db, key) <- getDB
+                         indexString <- prompt "Index: "
+                         let index = read indexString
+                         let (before, (here:after)) = splitAt index db
+                         newEntry <- editPass here
+                         savePassDB key dbFile (before ++ [newEntry] ++ after)
+         "auto"    -> do (db, key) <- getDB
+                         autoType db
+         _         -> showHelp
+
+getDB = do pass <- getPassword
+           let key = stringToKey pass
+           passDB <- loadPassDB key dbFile
+           case passDB of Nothing -> getDB
+                          Just db -> return (db, key)
 
 prompt :: String -> IO String
 prompt msg = do putStr msg
@@ -25,18 +71,3 @@ prompt msg = do putStr msg
                 getLine
 
 getPassword = prompt "Password: "
-
-dbAction :: PassDB -> IO PassDB
-dbAction passDB = do
-    command <- prompt "Action: "
-    case command of
-         "print" -> do print passDB
-                       return passDB
-         "add"   -> do name <- prompt "Name: "
-                       user <- prompt "User: "
-                       pass <- prompt "Pass: "
-                       desc <- prompt "Desc: "
-                       let new = PassEntry name user pass desc
-                       return $ SET.insert new passDB
-         _       -> do putStrLn "Unrecognized command"
-                       return passDB
