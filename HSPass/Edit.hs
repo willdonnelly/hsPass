@@ -1,20 +1,17 @@
-module Edit
-  ( editPass
-  ) where
+module HSPass.Edit ( editPassword ) where
 
-import Storage
-
+import HSPass.Passwords
 import System.IO
 
-editPass :: PassEntry -> IO PassEntry
-editPass (PassEntry dName dUser dPass dDesc) = do
+editPassword :: PassEntry -> IO PassEntry
+editPassword (PassEntry dName dUser dPass dDesc) = do
     name <- prompt dName "Name"
     user <- prompt dUser "User"
     pass <- prompt dPass "Pass"
     desc <- prompt dDesc "Desc"
     return $ PassEntry name user pass desc
   where prompt def msg = do
-            putStr $ msg ++ "[" ++ def ++ "]: "
+            putStr $ msg ++ " [" ++ def ++ "]: "
             hFlush stdout
             result <- getLine
             case result of

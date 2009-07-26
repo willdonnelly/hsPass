@@ -1,0 +1,21 @@
+Name:          hsPass
+Version:       0.1
+Category:      Example
+Synopsis:      A simple password management solution written in Haskell
+
+Build-Type:    Simple
+Cabal-Version: >= 1.2
+
+library
+  exposed-modules: HSPass,
+                   HSPass.Config,
+                   HSPass.AutoType,
+                   HSPass.Database,
+                   HSPass.Passwords,
+                   HSPass.Encryption,
+                   HSPass.Util,
+                   HSPass.Edit
+  build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT
+
+executable hsPass
+  main-is:         Main.hs

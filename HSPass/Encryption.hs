@@ -1,6 +1,5 @@
-module Encryption
-  ( stringToKey
-  , CryptKey
+module HSPass.Encryption
+  ( stringToKey, CryptKey
   , encryptString
   , decryptString ) where
 
