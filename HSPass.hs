@@ -17,7 +17,9 @@ realMain cfg@Config{passPath = passPath, plugins = plugins} = do
     let params  = if null arguments then [] else tail arguments
     case command `lookup` plugins of
          Nothing -> showHelp params cfg
-         Just fn -> do (db, key) <- getDB filePath cfg
+         Just fn -> do (db, key) <- if command == "autotype"
+                                       then getDB filePath (typePrompt cfg)
+                                       else getDB filePath (passPrompt cfg)
                        newDB <- fn db params cfg
                        case newDB of
                             Nothing -> return ()
@@ -33,12 +35,12 @@ showHelp args config = do
       , "]"
       ]
 
-getDB path cfg@Config{passPrompt = getPass} = do
+getDB path getPass = do
     pass <- getPass
     let key = stringToKey pass
     passDB <- loadPassDB key path
     case passDB of
-         Nothing -> getDB path cfg
+         Nothing -> getDB path getPass
          Just db -> return (db, key)
 
 hsPass = Dyre.wrapMain Dyre.defaultParams

@@ -15,7 +15,7 @@ library
                    HSPass.Encryption,
                    HSPass.Util,
                    HSPass.Edit
-  build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT
+  build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT, autotype, simple-dialog
 
 executable hsPass
   main-is:         Main.hs

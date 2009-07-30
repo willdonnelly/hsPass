@@ -9,6 +9,9 @@ import System.IO                      ( hFlush, stdout )
 import Data.List                      ( isInfixOf, isPrefixOf )
 import System.Environment.XDG.BaseDir ( getUserDataFile )
 
+import Data.Maybe ( fromMaybe )
+import Graphics.UI.Dialog.Simple ( showPasswordDialog )
+
 type PluginCommand = [PassEntry] -> [String] -> Config -> IO (Maybe [PassEntry])
 
 data Config = Config
@@ -18,11 +21,12 @@ data Config = Config
     , passPath    :: IO String
     , plugins     :: [(String, PluginCommand)]
     , passPrompt  :: IO String
+    , typePrompt  :: IO String
     }
 defaultConfig = Config
     { errorMsg    = Nothing
     , editPass    = editPassword
-    , defaultPass = PassEntry "" "" "" ""
+    , defaultPass = PassEntry "" "" "" "" ""
     , passPath    = getUserDataFile "hsPass" "passwords"
     , plugins     = [ ("search", searchCommand)
                     , ("reveal", revealCommand)
@@ -34,6 +38,9 @@ defaultConfig = Config
     , passPrompt = do putStr "Password: "
                       hFlush stdout
                       getLine
+    , typePrompt = do
+        pass <- showPasswordDialog "Password" "Please provide the password."
+        return $ fromMaybe "" pass
     }
 confError cfg msg = cfg { errorMsg = Just msg }
 
