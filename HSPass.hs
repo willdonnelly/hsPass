@@ -9,6 +9,7 @@ import System.Environment.XDG.BaseDir ( getUserDataFile )
 
 import HSPass.Core
 import HSPass.Common.Edit
+import HSPass.Common.Passgen
 
 import HSPass.Actions.Search
 import HSPass.Actions.Reveal
@@ -24,6 +25,7 @@ defaultConfig = Config
     { errorMsg    = Nothing
     , editPass    = editPassword
     , defaultPass = PassEntry "" "" "" "" ""
+    , genPassword = generatePassword 16 $ ['!'..'~'] ++ ['a'..'z']
     , passPath    = getUserDataFile "hsPass" "passwords"
     , plugins     = [ ("search", searchCommand)
                     , ("reveal", revealCommand)

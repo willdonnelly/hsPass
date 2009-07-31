@@ -8,6 +8,7 @@ data Config = Config
     { errorMsg    :: Maybe String
     , editPass    :: PassEntry -> IO PassEntry
     , defaultPass :: PassEntry
+    , genPassword :: IO String
     , passPath    :: IO String
     , plugins     :: [(String, PluginCommand)]
     , passPrompt  :: IO String

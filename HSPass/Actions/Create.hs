@@ -4,5 +4,6 @@ import HSPass.Core
 
 createCommand path args config@Config{editPass = edit} =
     withDatabase (passPrompt config) path $ \db -> do
-        newPass <- edit $ defaultPass config
+        password <- genPassword config
+        newPass <- edit $ (defaultPass config) {pass = password}
         return . Just $ db ++ [newPass]
