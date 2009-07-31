@@ -17,6 +17,7 @@ import HSPass.Actions.Modify
 import HSPass.Actions.Delete
 import HSPass.Actions.AutoType
 import HSPass.Actions.KeePassX
+import HSPass.Actions.JSON
 import HSPass.Actions.Help
 
 defaultConfig = Config
@@ -32,6 +33,8 @@ defaultConfig = Config
                     , ("autotype", autoType)
                     , ("keepassx-import", keepassxImport)
                     , ("keepassx-export", keepassxExport)
+                    , ("import", importJSON)
+                    , ("export", exportJSON)
                     , ("help",   showHelp)
                     ]
     , passPrompt = do putStr "Password: "
