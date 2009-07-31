@@ -2,7 +2,7 @@ module HSPass.Config where
 
 import HSPass.Passwords
 
-type PluginCommand = [PassEntry] -> [String] -> Config -> IO (Maybe [PassEntry])
+type PluginCommand = FilePath -> [String] -> Config -> IO ()
 
 data Config = Config
     { errorMsg    :: Maybe String
@@ -11,5 +11,4 @@ data Config = Config
     , passPath    :: IO String
     , plugins     :: [(String, PluginCommand)]
     , passPrompt  :: IO String
-    , typePrompt  :: IO String
     }

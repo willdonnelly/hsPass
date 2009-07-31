@@ -9,12 +9,18 @@ Cabal-Version: >= 1.2
 library
   exposed-modules: HSPass,
                    HSPass.Config,
-                   HSPass.AutoType,
+                   HSPass.Config.Default,
                    HSPass.Database,
-                   HSPass.Passwords,
+                   HSPass.Edit,
                    HSPass.Encryption,
+                   HSPass.Passwords,
                    HSPass.Util,
-                   HSPass.Edit
+                   HSPass.Actions.AutoType,
+                   HSPass.Actions.Create,
+                   HSPass.Actions.Delete,
+                   HSPass.Actions.Modify,
+                   HSPass.Actions.Reveal,
+                   HSPass.Actions.Search
   build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT, autotype, simple-dialog
 
 executable hsPass
