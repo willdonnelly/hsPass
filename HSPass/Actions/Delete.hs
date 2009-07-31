@@ -3,7 +3,6 @@ module HSPass.Actions.Delete ( deleteCommand ) where
 import System.IO ( hFlush, stdout )
 import Data.List ( isPrefixOf )
 
-import HSPass.Common.Database
 import HSPass.Common.Index
 import HSPass.Core
 

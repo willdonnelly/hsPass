@@ -13,7 +13,6 @@ library
                    HSPass.Core.Database,
                    HSPass.Core.Encryption,
                    HSPass.Core.Passwords,
-                   HSPass.Common.Database,
                    HSPass.Common.Index,
                    HSPass.Common.Edit,
                    HSPass.Actions.AutoType,

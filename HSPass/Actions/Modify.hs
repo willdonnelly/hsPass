@@ -1,7 +1,6 @@
 module HSPass.Actions.Modify ( modifyCommand ) where
 
 import HSPass.Common.Index
-import HSPass.Common.Database
 import HSPass.Core
 
 modifyCommand dbPath args config@Config{editPass = edit} =

@@ -6,7 +6,6 @@ import System.Automation.Type
 import Graphics.UI.Dialog.Simple ( showPasswordDialog )
 
 import HSPass.Core
-import HSPass.Common.Database
 
 sendPassword window passEntry = sendString window passString
   where passString = (user passEntry) ++ "\t" ++ (pass passEntry) ++ "\n"
@@ -15,7 +14,7 @@ autoType dbPath args config = do
     window <- getCurrentFocus
     withDatabase guiPrompt dbPath $ \db -> do
         title <- getWindowTitle window
-        let matching = filter ((`isInfixOf` title) . titleText) db
+        let matching = filter ((`isInfixOf` title) . name) db
         if null matching
            then return ()
            else sendPassword window (head matching)
