@@ -25,7 +25,7 @@ defaultConfig = Config
     { errorMsg    = Nothing
     , editPass    = editPassword
     , defaultPass = PassEntry "" "" "" "" ""
-    , genPassword = generatePassword 16 $ ['!'..'~'] ++ ['a'..'z']
+    , genPassword = generatePassword 32 $ ['A'..'Z'] ++ ['a'..'z'] ++ ['0'..'9']
     , passPath    = getUserDataFile "hsPass" "passwords"
     , plugins     = [ ("search", searchCommand)
                     , ("reveal", revealCommand)
