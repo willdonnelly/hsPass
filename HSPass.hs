@@ -6,6 +6,7 @@ import System.Environment ( getArgs, getProgName )
 import Data.List          ( intercalate )
 
 import HSPass.Config
+import HSPass.DefaultConfig
 import HSPass.Database
 import HSPass.Encryption
 
