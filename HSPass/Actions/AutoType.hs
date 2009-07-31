@@ -5,6 +5,7 @@ import Data.Maybe ( fromMaybe )
 import System.Automation.Type
 import Graphics.UI.Dialog.Simple ( showPasswordDialog )
 
+import HSPass.Common.Search
 import HSPass.Core
 
 sendPassword window passEntry = sendString window passString
@@ -14,10 +15,10 @@ autoType dbPath args config = do
     window <- getCurrentFocus
     withDatabase guiPrompt dbPath $ \db -> do
         title <- getWindowTitle window
-        let matching = filter ((`isInfixOf` title) . name) db
-        if null matching
-           then return ()
-           else sendPassword window (head matching)
+        let match = searchSingle 0.08 title $ db
+        case match of
+             Nothing -> return ()
+             Just mp -> sendPassword window mp
         freeWinRef window
         return Nothing
 
