@@ -1,7 +1,8 @@
 module HSPass.Actions.Reveal ( revealCommand ) where
 
-import HSPass.Util
-import HSPass.Config
+import HSPass.Common.Index
+import HSPass.Common.Database
+import HSPass.Core
 
 revealCommand dbPath args config =
     withDatabase (passPrompt config) dbPath $ \db -> do

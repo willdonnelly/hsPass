@@ -5,8 +5,8 @@ import Data.Maybe ( fromMaybe )
 import System.Automation.Type
 import Graphics.UI.Dialog.Simple ( showPasswordDialog )
 
-import HSPass.Passwords
-import HSPass.Util
+import HSPass.Core
+import HSPass.Common.Database
 
 sendPassword window passEntry = sendString window passString
   where passString = (user passEntry) ++ "\t" ++ (pass passEntry) ++ "\n"

@@ -3,8 +3,9 @@ module HSPass.Actions.Delete ( deleteCommand ) where
 import System.IO ( hFlush, stdout )
 import Data.List ( isPrefixOf )
 
-import HSPass.Util
-import HSPass.Config
+import HSPass.Common.Database
+import HSPass.Common.Index
+import HSPass.Core
 
 deleteCommand dbPath args config =
     withDatabase (passPrompt config) dbPath $ \db -> do

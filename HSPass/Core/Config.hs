@@ -1,6 +1,6 @@
-module HSPass.Config where
+module HSPass.Core.Config where
 
-import HSPass.Passwords
+import HSPass.Core.Passwords
 
 type PluginCommand = FilePath -> [String] -> Config -> IO ()
 

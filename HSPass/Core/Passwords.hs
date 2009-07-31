@@ -1,4 +1,4 @@
-module HSPass.Passwords ( PassEntry (..) ) where
+module HSPass.Core.Passwords ( PassEntry (..) ) where
 
 data PassEntry = PassEntry { name :: String
                            , user :: String

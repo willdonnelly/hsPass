@@ -2,9 +2,9 @@ module HSPass.Actions.Search ( searchCommand ) where
 
 import Data.List ( isInfixOf )
 
-import HSPass.Passwords
-import HSPass.Util
-import HSPass.Config
+import HSPass.Common.Index
+import HSPass.Common.Database
+import HSPass.Core
 
 searchCommand path args config = withDatabase (passPrompt config) path search
   where search db = do

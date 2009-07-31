@@ -1,4 +1,4 @@
-module HSPass.Encryption
+module HSPass.Core.Encryption
   ( stringToKey, CryptKey
   , encryptString
   , decryptString ) where

@@ -2,11 +2,41 @@ module HSPass ( hsPass, Config(..), defaultConfig ) where
 
 import qualified Config.Dyre as Dyre
 
-import Data.Maybe         ( fromMaybe, fromJust )
-import System.Environment ( getArgs )
+import System.IO                      ( hFlush, stdout )
+import Data.Maybe                     ( fromMaybe, fromJust )
+import System.Environment             ( getArgs )
+import System.Environment.XDG.BaseDir ( getUserDataFile )
 
-import HSPass.Config
-import HSPass.Config.Default
+import HSPass.Core
+import HSPass.Common.Edit
+
+import HSPass.Actions.Search
+import HSPass.Actions.Reveal
+import HSPass.Actions.Create
+import HSPass.Actions.Modify
+import HSPass.Actions.Delete
+import HSPass.Actions.AutoType
+import HSPass.Actions.Help
+
+defaultConfig = Config
+    { errorMsg    = Nothing
+    , editPass    = editPassword
+    , defaultPass = PassEntry "" "" "" "" ""
+    , passPath    = getUserDataFile "hsPass" "passwords"
+    , plugins     = [ ("search", searchCommand)
+                    , ("reveal", revealCommand)
+                    , ("create", createCommand)
+                    , ("modify", modifyCommand)
+                    , ("delete", deleteCommand)
+                    , ("autotype", autoType)
+                    , ("help",   showHelp)
+                    ]
+    , passPrompt = do putStr "Password: "
+                      hFlush stdout
+                      getLine
+    }
+
+confError cfg msg = cfg { errorMsg = Just msg }
 
 realMain :: Config -> IO ()
 realMain cfg@Config{passPath = passPath, plugins = plugins} = do

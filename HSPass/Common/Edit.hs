@@ -1,6 +1,6 @@
-module HSPass.Edit ( editPassword ) where
+module HSPass.Common.Edit ( editPassword ) where
 
-import HSPass.Passwords
+import HSPass.Core.Passwords
 import System.IO
 
 editPassword :: PassEntry -> IO PassEntry

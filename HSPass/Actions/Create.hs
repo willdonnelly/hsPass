@@ -1,7 +1,7 @@
 module HSPass.Actions.Create ( createCommand ) where
 
-import HSPass.Util
-import HSPass.Config
+import HSPass.Core
+import HSPass.Common.Database
 
 createCommand path args config@Config{editPass = edit} =
     withDatabase (passPrompt config) path $ \db -> do
