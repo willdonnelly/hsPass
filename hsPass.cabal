@@ -22,7 +22,7 @@ library
                    HSPass.Actions.Reveal,
                    HSPass.Actions.Search,
                    HSPass.Actions.Help
-  build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT, autotype, simple-dialog
+  build-depends:   base, dyre, xdg-basedir, bytestring, Crypto, utf8-string, directory, MaybeT, autotype, simple-dialog, xml
 
 executable hsPass
   main-is:         Main.hs
