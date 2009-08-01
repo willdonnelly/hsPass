@@ -15,7 +15,7 @@ autoType dbPath args config = do
     window <- getCurrentFocus
     withDatabase guiPrompt dbPath $ \db -> do
         title <- getWindowTitle window
-        let match = searchSingle 0.08 title $ db
+        let match = bestPassword 0.2 db $ title
         case match of
              Nothing -> return ()
              Just mp -> sendPassword window mp
